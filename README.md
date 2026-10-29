@@ -14,4 +14,4 @@ Open the published HTTPS app URL in Android Chrome. After the first complete onl
 
 ## Updates
 
-Update the private source through a pull request, wait for Checks, and use its focus-studio-web-release artifact. Attach focus-studio-web.zip and SHA256SUMS to a new approved release here; the release workflow verifies and deploys it. Previous releases remain available for rollback.
+Update the private source through a pull request, wait for Checks, and use its focus-studio-web-release artifact. Attach focus-studio-web.zip and SHA256SUMS to a new approved release here. Then run Publish Focus Studio web release from Actions on the main branch. The workflow verifies and deploys the latest release while keeping the Pages main-branch protection rule. Previous releases remain available for rollback.
