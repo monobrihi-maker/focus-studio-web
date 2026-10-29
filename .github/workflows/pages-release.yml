@@ -1,0 +1,35 @@
+name: Publish Focus Studio web release
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Download the latest approved web release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release download --repo "$GITHUB_REPOSITORY" --pattern 'focus-studio-web.zip' --pattern 'SHA256SUMS' --dir release
+      - name: Verify and unpack the web build
+        run: |
+          cd release
+          sha256sum --check SHA256SUMS
+          mkdir -p ../public
+          unzip -q focus-studio-web.zip -d ../public
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - id: deployment
+        uses: actions/deploy-pages@v4
